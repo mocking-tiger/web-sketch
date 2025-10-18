@@ -13,11 +13,12 @@ const slideUp = keyframes`
 
 const Wrapper2 = styled(Wrapper)<{ $isLast: boolean }>`
   .div1 {
-    width: 600px;
+    width: 700px;
 
     .div2 {
-      height: 56px;
+      height: 48px;
       font-size: 48px;
+      line-height: 48px;
       display: flex;
       gap: 10px;
       overflow: hidden;
@@ -27,6 +28,8 @@ const Wrapper2 = styled(Wrapper)<{ $isLast: boolean }>`
         flex-direction: column;
 
         span {
+          height: 48px;
+          line-height: 48px;
           color: brown;
           animation: ${(props) => (props.$isLast ? "none" : slideUp)} 0.5s
             ease-in-out;
@@ -35,15 +38,18 @@ const Wrapper2 = styled(Wrapper)<{ $isLast: boolean }>`
     }
 
     .div2-2 {
+      height: 28px;
       font-size: 24px;
+      line-height: 28px;
       overflow: hidden;
 
       .div4 {
-        height: 29px;
         display: flex;
         flex-direction: column;
 
         span {
+          height: 28px;
+          line-height: 28px;
           animation: ${(props) => (props.$isLast ? "none" : slideUp)} 0.5s
             ease-in-out;
         }
@@ -61,33 +67,34 @@ export default function WeAre() {
     "데이터 중심 마케팅 | 마케팅 시스템 개선을 통한 효율성 극대화",
     "플러터 (Flutter) | 디지털 기술 기반의 신개념 서비스 플랫폼",
   ];
-  const [Y, setY] = useState(0);
+  const [index, setIndex] = useState(0);
   const [isLast, setIsLast] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(
+    const timer = setTimeout(
       () => {
-        setY((prev) => {
-          if (prev === -300) {
+        setIndex((prev) => {
+          const nextIndex = prev + 1;
+          if (nextIndex === 4) {
             setIsLast(true);
             return 0;
           }
           setIsLast(false);
-          return prev - 100;
+          return nextIndex;
         });
       },
       isLast ? 0 : 2000
     );
 
-    return () => clearInterval(interval);
-  }, [isLast]);
+    return () => clearTimeout(timer);
+  }, [index, isLast]);
 
   return (
-    <Wrapper2 key={Y} $isLast={isLast}>
+    <Wrapper2 key={index} $isLast={isLast}>
       <div className="div1">
         <div className="div2">
           <div>We</div>
-          <div className="div3" style={{ transform: `translateY(${Y}%)` }}>
+          <div className="div3" style={{ transform: `translateY(-${index * 48}px)` }}>
             <span>{arr[0]}</span>
             <span>{arr[1]}</span>
             <span>{arr[2]}</span>
@@ -95,7 +102,7 @@ export default function WeAre() {
           </div>
         </div>
         <div className="div2-2">
-          <div className="div4" style={{ transform: `translateY(${Y}%)` }}>
+          <div className="div4" style={{ transform: `translateY(-${index * 28}px)` }}>
             <span>{arr2[0]}</span>
             <span>{arr2[1]}</span>
             <span>{arr2[2]}</span>
